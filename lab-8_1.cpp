@@ -179,9 +179,8 @@ double aStar(Node* start, Node* goal, const vector<Node*>& nodes) {
     return -1.0; // O(1) по времени
 }
 
-void test(Graph& graph) {
+void testDfs(Graph& graph) {
     graph.loadFromFile("spb_graph.txt"); // O(V + E) по времени для загрузки файла
-    cout << "Memory Usage: " << graph.memoryUsage << " bytes" << endl;
 
     Node* start = graph.findClosestNode(59.884972, 30.368072); // O(V) по времени
     Node* goal = graph.findClosestNode(59.956248, 30.309215); // O(V) по времени
@@ -191,20 +190,53 @@ void test(Graph& graph) {
     double distance = 0.0;
     unordered_set<Node*> visited; // O(V) памяти для DFS
     assert(dfs(start, goal, visited, distance)); // O(V + E) по времени
-    cout << "DFS Distance: " << distance << endl;
+    assert(distance == 14.0); // O(1) для проверки
+}
 
-    distance = bfs(start, goal); // O(V + E) по времени
-    cout << "BFS Distance: " << distance << endl;
+void testBfs(Graph& graph) {
+    graph.loadFromFile("spb_graph.txt"); // O(V + E) по времени для загрузки файла
 
-    distance = dijkstra(start, goal, graph.nodes); // O((V + E) * log(V)) по времени
-    cout << "Dijkstra Distance: " << distance << endl;
+    Node* start = graph.findClosestNode(59.884972, 30.368072); // O(V) по времени
+    Node* goal = graph.findClosestNode(59.956248, 30.309215); // O(V) по времени
 
-    distance = aStar(start, goal, graph.nodes); // O((V + E) * log(V)) по времени
-    cout << "A* Distance: " << distance << endl;
+    assert(start && goal); // O(1) для проверки
+
+    double distance = bfs(start, goal); // O(V + E) по времени
+    assert(distance == 14.0); // O(1) для проверки
+}
+
+void testDijkstra(Graph& graph) {
+    graph.loadFromFile("spb_graph.txt"); // O(V + E) по времени для загрузки файла
+
+    Node* start = graph.findClosestNode(59.884972, 30.368072); // O(V) по времени
+    Node* goal = graph.findClosestNode(59.956248, 30.309215); // O(V) по времени
+
+    assert(start && goal); // O(1) для проверки
+
+    double distance = dijkstra(start, goal, graph.nodes); // O((V + E) * log(V)) по времени
+    assert(distance == 14.0); // O(1) для проверки
+}
+
+void testAStar(Graph& graph) {
+    graph.loadFromFile("spb_graph.txt"); // O(V + E) по времени для загрузки файла
+
+    Node* start = graph.findClosestNode(59.884972, 30.368072); // O(V) по времени
+    Node* goal = graph.findClosestNode(59.956248, 30.309215); // O(V) по времени
+
+    assert(start && goal); // O(1) для проверки
+
+    double distance = aStar(start, goal, graph.nodes); // O((V + E) * log(V)) по времени
+    assert(distance == 14.0); // O(1) для проверки
 }
 
 int main() {
     Graph graph;
-    test(graph); // O(V + E) для тестов
+
+    testDfs(graph); // O(V + E) для тестов
+    testBfs(graph); // O(V + E) для тестов
+    testDijkstra(graph); // O((V + E) * log(V)) для тестов
+    testAStar(graph); // O((V + E) * log(V)) для тестов
+
     return 0;
 }
+
